@@ -3,6 +3,8 @@ namespace App\Repositories;
 
 use App\Interfaces\StoreBalanceRepositoryInterface;
 use App\Models\StoreBalance;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class StoreBalanceRepository implements StoreBalanceRepositoryInterface{
     public function getAll(
@@ -44,6 +46,55 @@ class StoreBalanceRepository implements StoreBalanceRepositoryInterface{
         $query = StoreBalance::where('id', $id);
 
         return $query->first();
+    }
+
+    //menambahkan saldo
+    public function credit(
+        string $id,
+        string $amount
+    ) {
+        DB::beginTransaction();
+
+        try {
+            $storeBalance = StoreBalance::find($id);
+            $storeBalance->balance = bcadd($storeBalance->balance, $amount, 2);
+            $storeBalance->save();
+
+            DB::commit();
+
+            return $storeBalance;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    //pengurangan saldo
+    public function debit(
+        string $id,
+        string $amount
+    ) {
+        DB::beginTransaction();
+
+        try {
+            $storeBalance = StoreBalance::find($id);
+            
+            if(bccomp($storeBalance->balance, $amount, 2) < 0){
+                throw new Exception("Saldo tidak mencukupi");
+            }
+            
+            $storeBalance->balance = bcsub($storeBalance->balance, $amount, 2);
+            $storeBalance->save();
+
+            DB::commit();
+
+            return $storeBalance;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception($e->getMessage());
+        }
     }
 }
 

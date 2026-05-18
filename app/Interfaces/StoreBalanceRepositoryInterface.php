@@ -17,6 +17,16 @@ interface StoreBalanceRepositoryInterface{
     public function getById(
         string $id
     );
+    //menambahkan uang
+    public function credit(
+        string $id,
+        string $amount
+    );
+    //mengurangi uang
+    public function debit(
+        string $id,
+        string $amount
+    );
 }
 
 ?>
