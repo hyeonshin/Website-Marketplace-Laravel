@@ -15,11 +15,11 @@ class StoreBalanceHistoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'store_balance' => new StoreBalanceHistoryResource($this->storeBalance),
+            'store_balance' => new StoreBalanceResource($this->storeBalance),
             'type' => $this->type,
             'reference_id' => $this->reference_id,
             'reference_type' => $this->reference_type,
-            'amount' => $this->amount,
+            'amount' => (float)(string)$this->amount,
             'remarks' => $this->remarks,
         ];
     }
