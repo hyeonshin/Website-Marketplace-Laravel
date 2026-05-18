@@ -46,7 +46,7 @@ class StoreBalanceController extends Controller
                 $request['row_per_page']
             );
 
-            return ResponseHelper::jsonResponse(true, 'Data User Berhasil Diambil', PaginateResource::make($storeBalances, StoreBalanceResource::class), 200);
+            return ResponseHelper::jsonResponse(true, 'Data Dompet Toko Berhasil Diambil', PaginateResource::make($storeBalances, StoreBalanceResource::class), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
         }
