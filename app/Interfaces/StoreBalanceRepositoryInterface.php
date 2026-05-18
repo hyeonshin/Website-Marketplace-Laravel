@@ -13,6 +13,10 @@ interface StoreBalanceRepositoryInterface{
         ?string $search,
         ?int $rowPerPage
     );
+
+    public function getById(
+        string $id
+    );
 }
 
 ?>

@@ -65,7 +65,17 @@ class StoreBalanceController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $storeBalance = $this->storeBalanceRepository->getById($id);
+
+            if(!$storeBalance){
+                return ResponseHelper::jsonResponse(true, 'Data Dompet Toko Tidak Ditemukan', null, 404);
+            }
+
+            return ResponseHelper::jsonResponse(true, 'Data Dompet Toko Berhasil Diambil', new StoreBalanceResource($storeBalance), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
