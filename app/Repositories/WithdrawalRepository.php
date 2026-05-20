@@ -38,6 +38,14 @@ class WithdrawalRepository implements WithdrawalRepositoryInterface{
 
         return $query->paginate($rowPerPage);
     }
+
+    public function getById(
+        string $id
+    ) {
+        $query = Withdrawal::where('id', $id);
+
+        return $query->first();
+    }
 }
 
 ?>
